@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { hours } from "../../common/utils/hours";
 import { InputField } from "../Form/InputField";
+import { SelectField } from "../Form/SelectField";
 import { FormValues } from "../FormValues";
 
 type FormValuesType = {
@@ -82,29 +83,18 @@ export const QuotationForm = (): JSX.Element => {
           </div>
 
           <div className="col-md-3">
-            <label className="form-label" htmlFor="pickUpHour">
-              Horário de retirada
-            </label>
-            <select
-              className={
-                !!errors.pickUpHour ? "form-select is-invalid" : "form-select"
-              }
+            <SelectField
               id="pickUpHour"
               name="pickUpHour"
-              aria-describedby="pickUpHourHelp"
+              label="Horário de retirada"
+              hint="Selecione a hora de retirada."
+              options={hours}
+              error={errors.pickUpHour}
+              touched={touched.pickUpHour}
               value={formValues.pickUpHour}
               onChange={handleFieldChange}
-            >
-              {hours.map((value) => (
-                <option key={`option-${value}`} value={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
-            <div className="form-text" id="pickUpHourHelp">
-              Selecione a hora de retirada.
-            </div>
-            <div className="invalid-feedback">{errors.pickUpHour}</div>
+              onBlur={handleBlur}
+            />
           </div>
         </div>
 
