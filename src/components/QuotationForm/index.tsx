@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import { object as schema, string } from "yup";
 import { hours } from "../../common/utils/hours";
 import { InputField } from "../Form/InputField";
 import { SelectField } from "../Form/SelectField";
@@ -24,23 +25,18 @@ export const QuotationForm = (): JSX.Element => {
     console.log(values);
   };
 
-  const validate = (values: FormValuesType) => {
-    const error = {} as FormValuesType;
+  const dateRegex =
+    /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/;
 
-    if (!values.pickUpAgency) {
-      error.pickUpAgency = "É preciso preencher o local de retirada.";
-    }
-
-    if (!values.pickUpDate) {
-      error.pickUpDate = "É preciso preencher a data de retirada.";
-    }
-
-    if (!values.pickUpHour) {
-      error.pickUpHour = "É preciso selecionar o horário de retirada.";
-    }
-
-    return error;
-  };
+  const validationSchema = schema({
+    pickUpAgency: string().required("É preciso preencher o local de retirada."),
+    pickUpDate: string()
+      .required("É preciso preencher a data de retirada.")
+      .matches(dateRegex, "A data precisa estar no formato dd/mm/yyyy."),
+    pickUpHour: string().required(
+      "É preciso selecionar o horário de retirada."
+    ),
+  });
 
   const {
     values: formValues,
@@ -49,7 +45,7 @@ export const QuotationForm = (): JSX.Element => {
     touched,
     handleBlur,
     errors,
-  } = useFormik<FormValuesType>({ initialValues, validate, onSubmit });
+  } = useFormik<FormValuesType>({ initialValues, validationSchema, onSubmit });
 
   return (
     <>
