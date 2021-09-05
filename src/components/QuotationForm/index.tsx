@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import { hours } from "../../common/utils/hours";
+import { InputField } from "../Form/InputField";
 import { FormValues } from "../FormValues";
 
 type FormValuesType = {
@@ -43,6 +44,8 @@ export const QuotationForm = (): JSX.Element => {
     values: formValues,
     handleChange: handleFieldChange,
     handleSubmit,
+    touched,
+    handleBlur,
     errors,
   } = useFormik<FormValuesType>({ initialValues, validate, onSubmit });
 
@@ -51,45 +54,31 @@ export const QuotationForm = (): JSX.Element => {
       <form onSubmit={handleSubmit}>
         <div className="row mb-3">
           <div className="col-md-5">
-            <label className="form-label" htmlFor="pickUpAgency">
-              Local de retirada
-            </label>
-            <input
-              className={
-                !!errors.pickUpAgency
-                  ? "form-control is-invalid"
-                  : "form-control"
-              }
+            <InputField
               id="pickUpAgency"
               name="pickUpAgency"
-              aria-describedby="pickUpAgencyHelp"
+              label="Local de retirada"
+              hint="Selecione o local onde deseja retirar o carro."
+              error={errors.pickUpAgency}
+              touched={touched.pickUpAgency}
               value={formValues.pickUpAgency}
               onChange={handleFieldChange}
+              onBlur={handleBlur}
             />
-            <div className="form-text" id="pickUpAgencyHelp">
-              Selecione o local onde deseja retirar o carro.
-            </div>
-            <div className="invalid-feedback">{errors.pickUpAgency}</div>
           </div>
 
           <div className="col-md-4">
-            <label className="form-label" htmlFor="pickUpDate">
-              Data de retirada
-            </label>
-            <input
-              className={
-                !!errors.pickUpDate ? "form-control is-invalid" : "form-control"
-              }
+            <InputField
               id="pickUpDate"
               name="pickUpDate"
-              aria-describedby="pickUpDateHelp"
+              label="Data de retirada"
+              hint="Selecione a data de retirada."
+              error={errors.pickUpDate}
+              touched={touched.pickUpDate}
               value={formValues.pickUpDate}
               onChange={handleFieldChange}
+              onBlur={handleBlur}
             />
-            <div className="form-text" id="pickUpDateHelp">
-              Selecione a data de retirada.
-            </div>
-            <div className="invalid-feedback">{errors.pickUpDate}</div>
           </div>
 
           <div className="col-md-3">

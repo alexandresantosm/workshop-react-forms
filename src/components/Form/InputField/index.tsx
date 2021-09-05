@@ -4,10 +4,10 @@ import classname from "classnames";
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
   name: string;
-  error: string;
+  error: string | undefined;
   hint: string;
   label: string;
-  touched: boolean;
+  touched: boolean | undefined;
 }
 
 export const InputField = ({
@@ -21,7 +21,7 @@ export const InputField = ({
 }: InputFieldProps): JSX.Element => {
   return (
     <>
-      <label className="form-label" htmlFor="pickUpAgency">
+      <label className="form-label" htmlFor={id}>
         {label}
       </label>
       <input
