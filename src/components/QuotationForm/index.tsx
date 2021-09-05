@@ -1,5 +1,5 @@
+import { ChangeEvent, useState } from "react";
 import { FormEvent } from "react";
-import { inputNames } from "../../common/constants/inputNames";
 import { hours } from "../../common/utils/hours";
 import { FormValues } from "../FormValues";
 
@@ -17,23 +17,25 @@ export const QuotationForm = (): JSX.Element => {
     pickUpHour: "",
     specialRequest: "",
   };
-  let formValues: FormValuesType = initialValues;
+  const [formValues, setFormValues] = useState<FormValuesType>(initialValues);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formInputs = event.currentTarget.elements;
-
-    formValues = inputNames.reduce(
-      (acc, name) => ({
-        ...acc,
-        // @ts-ignore
-        [name]: formInputs[name].value,
-      }),
-      initialValues
-    );
-
     console.log(formValues);
+  };
+
+  const handleFieldCahnge = (
+    event: ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = event.target;
+
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
   };
 
   return (
@@ -49,6 +51,8 @@ export const QuotationForm = (): JSX.Element => {
               id="pickUpAgency"
               name="pickUpAgency"
               aria-describedby="pickUpAgencyHelp"
+              value={formValues.pickUpAgency}
+              onChange={handleFieldCahnge}
             />
             <div className="form-text" id="pickUpAgencyHelp">
               Selecione o local onde deseja retirar o carro.
@@ -64,6 +68,8 @@ export const QuotationForm = (): JSX.Element => {
               id="pickUpDate"
               name="pickUpDate"
               aria-describedby="pickUpDateHelp"
+              value={formValues.pickUpDate}
+              onChange={handleFieldCahnge}
             />
             <div className="form-text" id="pickUpDateHelp">
               Selecione a data de retirada.
@@ -79,6 +85,8 @@ export const QuotationForm = (): JSX.Element => {
               id="pickUpHour"
               name="pickUpHour"
               aria-describedby="pickUpHourHelp"
+              value={formValues.pickUpHour}
+              onChange={handleFieldCahnge}
             >
               {hours.map((value) => (
                 <option key={`option-${value}`} value={value}>
@@ -103,6 +111,8 @@ export const QuotationForm = (): JSX.Element => {
               id="specialRequest"
               name="specialRequest"
               aria-describedby="specialRequestHelp"
+              value={formValues.specialRequest}
+              onChange={handleFieldCahnge}
             />
             <div className="form-text" id="specialRequestHelp">
               Esse é um espaço destinado especialmente para você nos contar como
