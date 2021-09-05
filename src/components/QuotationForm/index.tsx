@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import { hours } from "../../common/utils/hours";
 import { InputField } from "../Form/InputField";
 import { SelectField } from "../Form/SelectField";
+import { TextareaField } from "../Form/TextareaField";
 import { FormValues } from "../FormValues";
 
 type FormValuesType = {
@@ -100,26 +101,18 @@ export const QuotationForm = (): JSX.Element => {
 
         <div className="row mb-3">
           <div className="col-md-12">
-            <label className="form-label" htmlFor="specialRequest">
-              Pedido especial
-            </label>
-
-            <textarea
-              className={
-                !!errors.specialRequest
-                  ? "form-control is-invalid"
-                  : "form-control"
-              }
+            <TextareaField
               id="specialRequest"
               name="specialRequest"
-              aria-describedby="specialRequestHelp"
+              label="Pedido especial"
+              hint="Esse é um espaço destinado especialmente para você nos contar como
+              podemos lhe atender melhor."
+              error={errors.specialRequest}
               value={formValues.specialRequest}
+              touched={touched.specialRequest}
               onChange={handleFieldChange}
+              onBlur={handleBlur}
             />
-            <div className="form-text" id="specialRequestHelp">
-              Esse é um espaço destinado especialmente para você nos contar como
-              podemos lhe atender melhor.
-            </div>
           </div>
         </div>
 
