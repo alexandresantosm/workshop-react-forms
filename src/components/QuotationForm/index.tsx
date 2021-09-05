@@ -21,11 +21,30 @@ export const QuotationForm = (): JSX.Element => {
     console.log(values);
   };
 
+  const validate = (values: FormValuesType) => {
+    const error = {} as FormValuesType;
+
+    if (!values.pickUpAgency) {
+      error.pickUpAgency = "É preciso preencher o local de retirada.";
+    }
+
+    if (!values.pickUpDate) {
+      error.pickUpDate = "É preciso preencher a data de retirada.";
+    }
+
+    if (!values.pickUpHour) {
+      error.pickUpHour = "É preciso selecionar o horário de retirada.";
+    }
+
+    return error;
+  };
+
   const {
     values: formValues,
     handleChange: handleFieldChange,
     handleSubmit,
-  } = useFormik<FormValuesType>({ initialValues, onSubmit });
+    errors,
+  } = useFormik<FormValuesType>({ initialValues, validate, onSubmit });
 
   return (
     <>
@@ -36,7 +55,11 @@ export const QuotationForm = (): JSX.Element => {
               Local de retirada
             </label>
             <input
-              className="form-control"
+              className={
+                !!errors.pickUpAgency
+                  ? "form-control is-invalid"
+                  : "form-control"
+              }
               id="pickUpAgency"
               name="pickUpAgency"
               aria-describedby="pickUpAgencyHelp"
@@ -46,6 +69,7 @@ export const QuotationForm = (): JSX.Element => {
             <div className="form-text" id="pickUpAgencyHelp">
               Selecione o local onde deseja retirar o carro.
             </div>
+            <div className="invalid-feedback">{errors.pickUpAgency}</div>
           </div>
 
           <div className="col-md-4">
@@ -53,7 +77,9 @@ export const QuotationForm = (): JSX.Element => {
               Data de retirada
             </label>
             <input
-              className="form-control"
+              className={
+                !!errors.pickUpDate ? "form-control is-invalid" : "form-control"
+              }
               id="pickUpDate"
               name="pickUpDate"
               aria-describedby="pickUpDateHelp"
@@ -63,6 +89,7 @@ export const QuotationForm = (): JSX.Element => {
             <div className="form-text" id="pickUpDateHelp">
               Selecione a data de retirada.
             </div>
+            <div className="invalid-feedback">{errors.pickUpDate}</div>
           </div>
 
           <div className="col-md-3">
@@ -70,7 +97,9 @@ export const QuotationForm = (): JSX.Element => {
               Horário de retirada
             </label>
             <select
-              className="form-select"
+              className={
+                !!errors.pickUpHour ? "form-select is-invalid" : "form-select"
+              }
               id="pickUpHour"
               name="pickUpHour"
               aria-describedby="pickUpHourHelp"
@@ -86,6 +115,7 @@ export const QuotationForm = (): JSX.Element => {
             <div className="form-text" id="pickUpHourHelp">
               Selecione a hora de retirada.
             </div>
+            <div className="invalid-feedback">{errors.pickUpHour}</div>
           </div>
         </div>
 
@@ -96,7 +126,11 @@ export const QuotationForm = (): JSX.Element => {
             </label>
 
             <textarea
-              className="form-control"
+              className={
+                !!errors.specialRequest
+                  ? "form-control is-invalid"
+                  : "form-control"
+              }
               id="specialRequest"
               name="specialRequest"
               aria-describedby="specialRequestHelp"
