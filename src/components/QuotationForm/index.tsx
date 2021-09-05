@@ -1,10 +1,13 @@
 import { useFormik } from "formik";
 import { object as schema, string } from "yup";
+
 import { hours } from "../../common/utils/hours";
+import { sleep } from "../../services/fakeApi";
 import { InputField } from "../Form/InputField";
 import { SelectField } from "../Form/SelectField";
 import { TextareaField } from "../Form/TextareaField";
 import { FormValues } from "../FormValues";
+import { Loading } from "../Loading";
 
 type FormValuesType = {
   pickUpAgency: string;
@@ -21,7 +24,9 @@ export const QuotationForm = (): JSX.Element => {
     specialRequest: "",
   };
 
-  const onSubmit = (values: FormValuesType) => {
+  const onSubmit = async (values: FormValuesType) => {
+    await sleep();
+
     console.log(values);
   };
 
@@ -45,6 +50,7 @@ export const QuotationForm = (): JSX.Element => {
     touched,
     handleBlur,
     errors,
+    isSubmitting,
   } = useFormik<FormValuesType>({ initialValues, validationSchema, onSubmit });
 
   return (
@@ -114,8 +120,17 @@ export const QuotationForm = (): JSX.Element => {
 
         <div className="row">
           <div className="col-md-12">
-            <button className="btn btn-primary" type="submit">
-              Enviar
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Enviar{" "}
+              {!!isSubmitting && (
+                <span className="mx-2">
+                  <Loading />
+                </span>
+              )}
             </button>
           </div>
         </div>
